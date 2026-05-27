@@ -7,8 +7,8 @@ CAROUSEL_SRC="$SCRIPT_DIR/_source-images/carousel"
 LOGOS_SRC="$SCRIPT_DIR/_source-images/logos"
 OUT_BASE="$SCRIPT_DIR/XMB Menu"
 
-RESOLUTIONS=("1024x768")
-HEIGHTS=(768)
+RESOLUTIONS=("640x480" "720X480" "720x720" "960x720" "1280x720" "1024x768")
+HEIGHTS=(480 480 720 720 720 768)
 
 carousel_sel_count=0
 carousel_count=0
@@ -28,13 +28,13 @@ for i in "${!RESOLUTIONS[@]}"; do
   # Action 1: carousel → selected/ (full opacity, nearest-neighbor)
   for src in "$CAROUSEL_SEL_SRC"/*.png; do
     filename="$(basename "$src")"
-    magick "$src" -filter point -resize "x${height}" "$selected_dir/$filename"
+    magick "$src" -resize "x${height}" "$selected_dir/$filename"
   done
 
   # Action 2: carousel → root resolution folder (40% opacity, nearest-neighbor)
   for src in "$CAROUSEL_SRC"/*.png; do
     filename="$(basename "$src")"
-    magick "$src" -filter point -resize "x${height}" \
+    magick "$src" -resize "x${height}" \
       -alpha set -channel Alpha -evaluate multiply 0.4 +channel \
       "$root_dir/$filename"
   done
